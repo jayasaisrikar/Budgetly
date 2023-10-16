@@ -1,0 +1,45 @@
+<!-- shopping_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping List</title>
+</head>
+<body>
+    <h1>Shopping List</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>MRP</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in shopping_cart %}
+        <tr>
+            <td>{{ item['product_name'] }}</td>
+            <td>{{ item['product_price'] }}</td>
+            <td>
+                <form action="/edit_cart" method="POST">
+                    <input type="hidden" name="product_name" value="{{ item['product_name'] }}">
+                    <input type="number" name="new_quantity" value="{{ item['quantity'] }}" min="1" required>
+                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                </form>
+            </td>
+            <td>
+                <form action="/delete_cart" method="POST">
+                    <input type="hidden" name="product_name" value="{{ item['product_name'] }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p>Total Price: ₹{{ session.get('total_price', 0.0) }}</p>
+<a href="/" class="btn btn-primary">Back to Search</a>
+
+</body>
+</html>

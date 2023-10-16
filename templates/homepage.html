@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Search</title>
+    <!-- Include Bootstrap CSS from a CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Include Font Awesome for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Include custom CSS styles -->
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1561715276-a2d087060f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0);
+            color: #fff;
+        }
+
+        .navbar a {
+            color: #fff;
+        }
+
+        .navbar .btn {
+            background-color: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .list-group-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .list-group-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .animated-section {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .animated-section:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 30px;
+        }
+
+        .social-icons {
+            text-align: center;
+        }
+
+        .social-icons a {
+            color: #ffffff;
+            font-size: 20px;
+            margin: 0 10px;
+        }
+
+        .offcanvas {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Budgetly</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#search">Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#results">Results</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#cart">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <button class="btn" type="button" data-toggle="offcanvas" data-target="#loginCanvas">Login</button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn" type="button" data-toggle="offcanvas" data-target="#signupCanvas">Signup</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4" id="search">
+        <h1 class="mb-4">Product Search</h1>
+
+        <!-- Search Form -->
+        <form action="/" method="POST">
+            <div class="form-group">
+                <label for="search_term">Search for a product:</label>
+                <input type="text" class="form-control" id="search_term" name="search_term" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <!-- Animated Section 1 - Search Results -->
+    <div class="container animated-section" id="results">
+        <h2 class="mt-4">Search Results:</h2>
+        <ul class="list-group">
+            {% for product in products %}
+                <li class="list-group-item">
+                    {{ product['Product_name'] }} - Price: {{ product['MRP'] }}
+                    <form action="/add_to_cart" method="POST" class="mt-2">
+                        <input type="hidden" name="product_name" value="{{ product['Product_name'] }}">
+                        <input type="hidden" name="product_price" value="{{ product['MRP'] }}">
+                        <div class="form-group">
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Add to Cart</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Animated Section 2 - Shopping Cart -->
+    <div class="container animated-section" id="cart">
+        <h2 class="mt-4">Shopping Cart:</h2>
+        <form action="/edit_cart" method="POST">
+            <ul class="list-group">
+                {% for item in session.get('shopping_cart', []) %}
+                    <li class="list-group-item">
+                        {{ item['product_name'] }} - Price: ₹{{ item['product_price'] }} - Quantity:
+                        <input type="number" name="new_quantity_{{ item['product_name'] }}" value="{{ item['quantity'] }}" min="1" required>
+                        <button type="submit" name="product_name" value="{{ item['product_name'] }}" class="btn btn-primary btn-sm">Update</button>
+                        <a href="/delete_cart/{{ item['product_name'] }}" class="btn btn-danger btn-sm">Delete</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </form>
+        <!-- Display Total Price -->
+        <h4 class="mt-4">Total Price: ₹{{ total_price }}</h4>
+    </div>
+
+
+    <!-- Additional Animated Sections -->
+    <!-- Add more highly animated sections here -->
+
+    <!-- Offcanvas - Login -->
+    <div class="offcanvas" id="loginCanvas" tabindex="-1" role="dialog">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Login</h5>
+            <button type="button" class="close" data-toggle="offcanvas" data-target="#loginCanvas" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="login_username">Username:</label>
+                    <input type="text" class="form-control" id="login_username" name="login_username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login_password">Password:</label>
+                    <input type="password" class="form-control" id="login_password" name="login_password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Offcanvas - Signup -->
+    <div class="offcanvas" id="signupCanvas" tabindex="-1" role="dialog">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Signup</h5>
+            <button type="button" class="close" data-toggle="offcanvas" data-target="#signupCanvas" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <form action="/signup" method="POST">
+                <div class="form-group">
+                    <label for="signup_username">Username:</label>
+                    <input type="text" class="form-control" id="signup_username" name="signup_username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup_email">Email:</label>
+                    <input type="email" class="form-control" id="signup_email" name="signup_email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup_password">Password:</label>
+                    <input type="password" class="form-control" id="signup_password" name="signup_password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Signup</button>
+            </form>
+        </div>
+    </div>
+    <br><br><br>
+    <!-- Footer -->
+    <div class="footer">
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+        &copy; 2023 Budgetly. All rights reserved.
+    </div>
+
+    <!-- Include Bootstrap JS, jQuery, and FontAwesome from CDNs -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</body>
+
+</html>
